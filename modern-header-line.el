@@ -270,11 +270,18 @@ Never shorten the last part of the path."
         (t
          (modern-header-line-text-mode))))
 
+(defun modern-header-line-org-src-mode ()
+  "Applies the styling to the header-line-format that org-src-mode sets"
+  (modern-header-line-header
+   `(,header-line-format)
+   '((modern-header-line-cursor-position))))
+
 ;;;###autoload
 (defun modern-header-line-mode ()
   "Enable modern-header-line."
   (setq-default mode-line-format nil)
   (add-hook 'after-change-major-mode-hook #'modern-header-line)
+  (add-hook 'org-src-mode-hook #'modern-header-line-org-src-mode)
   (modern-header-line))
 
 (provide 'modern-header-line)
