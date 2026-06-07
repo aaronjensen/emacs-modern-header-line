@@ -74,6 +74,11 @@ Each element is (WORD . ABBREVIATION)."
   :type '(alist :key-type string :value-type string)
   :group 'modern-header-line)
 
+(defcustom modern-header-line-excluded-modes nil
+  "Major modes where `modern-header-line' should not install a header line."
+  :type '(repeat symbol)
+  :group 'modern-header-line)
+
 (defvar modern-header-line--project-relative-name-cache
   (make-hash-table :test 'equal))
 
@@ -264,9 +269,9 @@ Never shorten the last part of the path."
 
 (defun modern-header-line ()
   "Set modeline according to major mode."
-  (cond ((derived-mode-p 'prog-mode)
+  (cond ((apply #'derived-mode-p modern-header-line-excluded-modes))
+        ((derived-mode-p 'prog-mode)
          (modern-header-line-prog-mode))
-        ((derived-mode-p 'vterm-mode))
         (t
          (modern-header-line-text-mode))))
 
